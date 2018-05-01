@@ -1,4 +1,4 @@
-package ServidorA;
+package servidora;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
