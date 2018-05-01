@@ -60,8 +60,13 @@ public class ServerAImpl implements ServerA {
             broker.getClass().
             getDeclaredMethod("registrar_servidor",String.class,int.class,String.class)
                    .invoke(broker,"127.0.0.1",32000,"ServerA");
+            System.out.println("Servidor registrado en broker");
+            broker.getClass().
+            getDeclaredMethod("registrar_servicio",String.class,String.class,Class[].class,
+            String.class).invoke(broker,"ServerA","dar_fecha",null,"String");
+            System.out.println("Servicio registrado en broker");
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 }
