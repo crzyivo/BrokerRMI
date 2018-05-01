@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ServerBImpl implements ServerB {
     //Atributos privados
-    private List<String> coleccion;
+    private static List<String> coleccion=new ArrayList<String>();
 
     //Constructor por defecto
     public ServerBImpl() throws RemoteException
@@ -70,10 +70,26 @@ public class ServerBImpl implements ServerB {
             Registry registryBroker = LocateRegistry.getRegistry(32000);
             Remote broker = registryBroker.lookup("Broker");
             System.out.println("Broker obtenido");
-            //System.out.println(broker.ejecutar_servicio("dar_hora",null));
-            System.out.println(broker.getClass().
-            getDeclaredMethod("ejecutar_servicio",String.class,Object[].class)
-                   .invoke(broker,"dar_fecha",null));
+
+            broker.getClass().
+            getDeclaredMethod("registrar_servidor",String.class,int.class,String.class)
+                   .invoke(broker,"127.0.0.1",32000,"ServerB");
+            System.out.println("Servidor registrado");
+
+            broker.getClass().
+            getDeclaredMethod("registrar_servicio",String.class,String.class,Class[].class,
+            String.class).invoke(broker,"ServerB","numero_de_libros",null,"int");
+            System.out.println("Servicio numero_de_libros registrado");
+
+            broker.getClass().
+            getDeclaredMethod("registrar_servicio",String.class,String.class,Class[].class,
+            String.class).invoke(broker,"ServerB","listar_libros",null,"String");
+            System.out.println("Servicio listar_libros registrado");
+
+            broker.getClass().
+            getDeclaredMethod("registrar_servicio",String.class,String.class,Class[].class,
+            String.class).invoke(broker,"ServerB","añadir_libro",new Class[]{String.class},"null");
+            System.out.println("Servicio añadir_libro registrado");
             } catch (Exception e) {
               e.printStackTrace();
             }

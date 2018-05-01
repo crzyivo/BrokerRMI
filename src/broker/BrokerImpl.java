@@ -19,11 +19,18 @@ public class BrokerImpl implements Broker {
     public String ejecutar_servicio(String nom_servicio, Object[] parametros) {
       if(servicios.containsKey(nom_servicio)){
         try {
-            Servicio llamado = servicios.get(nom_servicio);
-            Remote servidor = objetos.get(llamado.getServidor());
-            return (String) servidor.getClass().getDeclaredMethod(llamado.getServicio(),llamado.getParametros())
+          Servicio llamado = servicios.get(nom_servicio);
+          Remote servidor = objetos.get(llamado.getServidor());
+          if(llamado.getRetorno().equals("null")){
+            servidor.getClass().getDeclaredMethod(llamado.getServicio(),llamado.getParametros())
             .invoke(servidor,parametros);
+            return "OK";
+          }else{
+            return String.valueOf( servidor.getClass().getDeclaredMethod(llamado.getServicio(),llamado.getParametros())
+            .invoke(servidor,parametros));
+          }
         }catch (Exception e){
+          e.printStackTrace();
           return "oops";
         }
       }else{
